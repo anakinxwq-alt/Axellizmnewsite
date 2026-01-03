@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Axellizm Efsane Sitesi</title>
+<style>
+/* Genel ayarlar */
+body, html {margin:0; padding:0; font-family:'Arial Black', sans-serif; overflow-x:hidden; text-align:center; transition: background 1s; color:white;}
+h1 {margin:20px 0; font-size:3em; color:#00f; text-shadow:0 0 10px #0ff,0 0 20px #0ff,0 0 30px #0ff; animation: glowTitle 2s infinite alternate;}
+@keyframes glowTitle {0%{text-shadow:0 0 10px #0ff;}50%{text-shadow:0 0 20px #ff0;}100%{text-shadow:0 0 30px #f0f;}}
+
+/* Arka plan yıldızlar */
+#stars {position:fixed; width:100%; height:100%; background:black; z-index:-1; overflow:hidden;}
+.star {position:absolute; width:2px; height:2px; background:white; border-radius:50%; animation:twinkle 2s infinite;}
+@keyframes twinkle {0%,100%{opacity:0.5;}50%{opacity:1;}}
+
+/* Bölümler */
+section {margin:20px auto; max-width:90%; padding:20px; background:rgba(0,0,0,0.5); border-radius:15px; display:none; transition:0.3s;}
+
+/* Butonlar */
+.button {display:block; margin:15px auto; padding:15px 30px; font-size:1.5em; color:white; background:#0ff; border:none; border-radius:15px; cursor:pointer; transition:0.3s; width:80%; position:relative; overflow:hidden; box-shadow:0 0 10px #0ff,0 0 20px #0ff inset;}
+.button:hover {background:#ff0; color:black; transform:scale(1.1); box-shadow:0 0 20px #f0f,0 0 30px #0ff inset;}
+
+/* Patlama efekti */
+.blast {position:absolute; width:10px; height:10px; border-radius:50%; pointer-events:none; animation:blast 0.5s forwards;}
+@keyframes blast {0%{transform:scale(1); opacity:1;}100%{transform:scale(3); opacity:0;}}
+
+/* Sohbet */
+#chat {border:2px solid #0ff; padding:10px; width:100%; height:200px; overflow-y:auto; margin:0 auto; background: rgba(0,255,255,0.05); border-radius:10px;}
+#chat input {width:70%; padding:5px; border-radius:5px; border:none;}
+#chat button {padding:5px 10px; border:none; border-radius:5px; background:#0ff; color:black; cursor:pointer;}
+.message {animation:msgMove 0.5s; text-shadow:0 0 5px #0ff;}
+@keyframes msgMove {0%{opacity:0; transform:translateY(10px);}100%{opacity:1; transform:translateY(0);}}
+
+/* Yılan */
+#game {background:#000; display:block; margin:20px auto; border:2px solid #0ff;}
+
+/* Video ve Müzik */
+audio, iframe {width:100%; border-radius:10px; margin-top:10px; border:none;}
+
+/* Hesap */
+#account input {padding:10px; margin:5px 0; width:80%; border-radius:10px; border:none;}
+#account button {margin-top:10px;}
+
+/* Neon Kalp */
+#heartContainer {margin-top:20px;}
+.heart {font-size:3em; color:#ff1493; text-shadow:0 0 5px #ff69b4,0 0 10px #ff1493,0 0 20px #ff1493; animation:beat 1s infinite;}
+@keyframes beat {0%,100%{transform:scale(1);}50%{transform:scale(1.3);}}
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+<h1>Axellizm Sitesine Hoşgeldiniz</h1>
+
+<!-- Hesap -->
+<section id="account">
+  <h2>Hesap Oluştur / Giriş</h2>
+  <input type="text" id="username" placeholder="Kullanıcı Adı"><br>
+  <input type="password" id="password" placeholder="Şifre"><br>
+  <button class="button" onclick="register()">Hesap Aç</button>
+  <button class="button" onclick="login()">Giriş Yap</button>
+  <p id="accountMessage"></p>
+</section>
+
+<!-- Butonlar -->
+<button class="button" onclick="toggleSection('game-section', event)">🎮 Yılan Oyunu</button>
+<button class="button" onclick="toggleSection('chat-section', event)">💬 Sohbet Odası</button>
+<button class="button" onclick="toggleSection('music-section', event)">🎵 Şarkı Dinleme</button>
+<button class="button" onclick="toggleSection('video-section', event)">📺 Video İzleme</button>
+<button class="button" onclick="toggleSection('heart-section', event)">❤️ Neon Kalp</button>
+
+<!-- Yılan -->
+<section id="game-section">
+  <h2>Yılan Oyunu</h2>
+  <canvas id="game" width="400" height="400"></canvas>
+</section>
+
+<!-- Sohbet -->
+<section id="chat-section">
+  <h2>Sohbet Odası</h2>
+  <div id="chat"></div>
+  <input type="text" id="chatInput" placeholder="Mesaj yaz...">
+  <button onclick="sendMessage()">Gönder</button>
+</section>
+
+<!-- Müzik -->
+<section id="music-section">
+  <h2>Şarkı Dinleme</h2>
+  <input type="text" id="musicInput" placeholder="MP3 veya YouTube URL gir..."><br>
+  <button onclick="playMusic()">Çal</button>
+  <audio id="musicPlayer" controls></audio>
+</section>
+
+<!-- Video -->
+<section id="video-section">
+  <h2>Video İzleme</h2>
+  <input type="text" id="videoInput" placeholder="YouTube URL gir..."><br>
+  <button onclick="playVideo()">Oynat</button>
+  <iframe id="videoPlayer" src="" allowfullscreen></iframe>
+</section>
+
+<!-- Neon Kalp -->
+<section id="heart-section">
+  <h2>Neon Kalp Oluştur</h2>
+  <input type="text" id="heartInput" placeholder="Bir harf gir..."><br>
+  <button class="button" onclick="createHeart()">Oluştur</button>
+  <div id="heartContainer"></div>
+</section>
+
+<script>
+// Arka plan renk animasyonu
+const colors=['#FF69B4','#FF4500','#FFA500','#00BFFF','#FF1493','#FF6347'];
+let index=0;
+setInterval(()=>{document.body.style.background=colors[index]; index=(index+1)%colors.length;},1000);
+
+// Yıldızları oluştur
+for(let i=0;i<150;i++){
+  let star=document.createElement('div'); star.className='star';
+  star.style.top=Math.random()*100+'%';
+  star.style.left=Math.random()*100+'%';
+  star.style.width=(Math.random()*3)+'px';
+  star.style.height=star.style.width;
+  document.getElementById('stars').appendChild(star);
+}
+
+// Patlama efekti
+function explodeButton(e){
+  const blast=document.createElement('div');
+  blast.className='blast';
+  blast.style.left=(e.offsetX-5)+'px';
+  blast.style.top=(e.offsetY-5)+'px';
+  blast.style.background='hsl('+Math.random()*360+',100%,50%)';
+  e.target.appendChild(blast);
+  setTimeout(()=>{blast.remove();},500);
+}
+
+// Bölümleri aç/kapat
+function toggleSection(id,e){
+  if(e) explodeButton(e);
+  let sec=document.getElementById(id);
+  sec.style.display=(sec.style.display==='block')?'none':'block';
+}
+
+// Hesap sistemi
+function register(){
+  let user=document.getElementById('username').value.trim();
+  let pass=document.getElementById('password').value.trim();
+  if(user && pass){ localStorage.setItem('user_'+user,pass); document.getElementById('accountMessage').textContent='Hesap oluşturuldu!'; }
+}
+function login(){
+  let user=document.getElementById('username').value.trim();
+  let pass=document.getElementById('password').value.trim();
+  if(localStorage.getItem('user_'+user)===pass) document.getElementById('accountMessage').textContent='Giriş başarılı!';
+  else document.getElementById('accountMessage').textContent='Hatalı kullanıcı adı veya şifre!';
+}
+
+// Sohbet
+function sendMessage(){
+  let input=document.getElementById('chatInput');
+  if(input.value.trim()!==''){
+    let chat=document.getElementById('chat');
+    let msg=document.createElement('div');
+    msg.textContent=input.value; msg.className='message';
+    msg.style.color='hsl('+Math.random()*360+',100%,70%)';
+    chat.appendChild(msg);
+    chat.scrollTop=chat.scrollHeight;
+    input.value='';
+  }
+}
+
+// Yılan Oyunu
+const canvas=document.getElementById('game');
+const ctx=canvas.getContext('2d');
+const grid=20; let count=0;
+let snake={x:160,y:160,dx:grid,dy:0,cells:[],maxCells:4, color:'#0f0'};
+let apple={x:320,y:320, color:'#f00'};
+function getRandomInt(min,max){return Math.floor(Math.random()*(max-min))+min;}
+function gameLoop(){
+  requestAnimationFrame(gameLoop);
+  if(++count<4) return; count=0;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  snake.x+=snake.dx; snake.y+=snake.dy;
+  if(snake.x<0) snake.x=canvas.width-grid; if(snake.x>=canvas.width) snake.x=0;
+  if(snake.y<0) snake.y=canvas.height-grid; if(snake.y>=canvas.height) snake.y=0;
+  snake.cells.unshift({x:snake.x,y:snake.y});
+  if(snake.cells.length>snake.maxCells) snake.cells.pop();
+  ctx.fillStyle=apple.color; ctx.fillRect(apple.x,apple.y,grid-1,grid-1);
+  ctx.fillStyle=snake.color;
+  snake.cells.forEach((cell,index)=>{
+    ctx.fillRect(cell.x,cell.y,grid-1,grid-1);
+    for(let i=index+1;i<snake.cells.length;i++){
+      if(cell.x===snake.cells[i].x && cell.y===snake.cells[i].y){
+        snake.x=160; snake.y=160; snake.cells=[]; snake.maxCells=4; snake.dx=grid; snake.dy=0;
+      }
+    }
+    if(cell.x===apple.x && cell.y===apple.y){
+      snake.maxCells++;
+      apple.x=getRandomInt(0,20)*grid; apple.y=getRandomInt(0,20)*grid;
+      snake.color='hsl('+Math.random()*360+',100%,50%)'; apple.color='hsl('+Math.random()*360+',100%,50%)';
+    }
+  });
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowLeft' && snake.dx===0){snake.dx=-grid; snake.dy=0;}
+  if(e.key==='ArrowUp' && snake.dy===0){snake.dx=0; snake.dy=-grid;}
+  if(e.key==='ArrowRight' && snake.dx===0){snake.dx=grid; snake.dy=0;}
+  if(e.key==='ArrowDown' && snake.dy===0){snake.dx=0; snake.dy=grid;}
+});
+requestAnimationFrame(gameLoop);
+
+// Müzik
+function playMusic(){
+  let url=document.getElementById('musicInput').value.trim();
+  if(url!==''){ let player=document.getElementById('musicPlayer'); player.src=url; player.play(); }
+}
+
+// Video
+function playVideo(){
+  let url=document.getElementById('videoInput').value.trim(); if(url==='') return;
+  let id='';
+  if(url.includes('youtube.com/watch?v=')) id=url.split('v=')[1].split('&')[0];
+  else if(url.includes('youtu.be/')) id=url.split('youtu.be/')[1].split('?')[0];
+  document.getElementById('videoPlayer').src='https://www.youtube.com/embed/'+id;
+}
+
+// Neon Kalp
+function createHeart(){
+  let letter=document.getElementById('heartInput').value.trim();
+  if(letter==='') return;
+  let container=document.getElementById('heartContainer'); container.innerHTML='';
+  let heart=document.createElement('div'); heart.className='heart'; heart.textContent=letter+'❤';
+  container.appendChild(heart);
+}
+</script>
+</body>
+</html>
