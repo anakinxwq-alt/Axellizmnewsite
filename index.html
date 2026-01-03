@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AXELLIZM || ETERNAL PRESTIGE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #c5a059;
+            --dark: #030303;
+            --border: rgba(197, 160, 89, 0.25);
+            --glass: rgba(255, 255, 255, 0.02);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+        body { 
+            background-color: var(--dark); 
+            color: white; 
+            font-family: 'Montserrat', sans-serif; 
+            overflow-x: hidden;
+            perspective: 1000px; /* 3D efektleri için derinlik */
+        }
+
+        /* --- SÜPER AKICI INTRO --- */
+        #splash {
+            position: fixed; inset: 0; background: #000; z-index: 10000;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .intro-text {
+            font-family: 'Bodoni Moda', serif; font-size: 2.2rem; color: var(--gold);
+            font-style: italic; letter-spacing: 15px; text-transform: uppercase;
+            animation: prestigeEntrance 4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0; text-align: center;
+        }
+        @keyframes prestigeEntrance {
+            0% { opacity: 0; transform: scale(1.1); filter: blur(20px); letter-spacing: 25px; }
+            40% { opacity: 1; filter: blur(0); letter-spacing: 15px; }
+            100% { opacity: 0; transform: scale(0.95); filter: blur(10px); }
+        }
+
+        header {
+            position: fixed; top: 0; width: 100%; padding: 40px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000; background: linear-gradient(to bottom, #000, transparent);
+        }
+        .brand { font-family: 'Bodoni Moda', serif; font-size: 1.6rem; letter-spacing: 5px; color: var(--gold); font-weight: 700; }
+
+        /* --- ELMAS KESİM BUTONLAR --- */
+        .royal-btn {
+            position: relative; overflow: hidden;
+            border: 1px solid var(--gold); padding: 15px 35px;
+            background: transparent; color: var(--gold);
+            font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-block; text-align: center;
+        }
+        .royal-btn::after {
+            content: ''; position: absolute; top: -50%; left: -60%;
+            width: 20%; height: 200%; background: rgba(255,255,255,0.2);
+            transform: rotate(30deg); transition: none;
+            animation: glint 5s infinite linear;
+        }
+        @keyframes glint { 0% { left: -60%; } 20% { left: 150%; } 100% { left: 150%; } }
+        
+        .royal-btn:active { transform: scale(0.92); background: var(--gold); color: black; }
+
+        main { padding: 140px 20px 200px; max-width: 1000px; margin: 0 auto; }
+
+        /* --- 3D TILT MODÜLLER --- */
+        .prestige-card {
+            border: 1px solid var(--border); padding: 50px; 
+            background: var(--glass); margin-bottom: 40px;
+            backdrop-filter: blur(15px); transition: 0.3s ease;
+            transform-style: preserve-3d;
+        }
+        .prestige-card:hover { border-color: var(--gold); background: rgba(197, 160, 89, 0.05); }
+
+        /* --- LIVE COUNTER PRESTIGE --- */
+        .footer-status {
+            margin-top: 60px; padding: 40px;
+            border-top: 1px solid var(--border);
+            text-align: center; background: radial-gradient(circle at center, rgba(197, 160, 89, 0.05) 0%, transparent 100%);
+        }
+        .status-pill {
+            display: inline-block; padding: 5px 15px; border: 1px solid var(--gold);
+            font-size: 0.55rem; letter-spacing: 3px; color: var(--gold); margin-bottom: 20px;
+        }
+        .count-display {
+            font-family: 'Bodoni Moda', serif; font-size: 3rem; font-weight: 700;
+            letter-spacing: -2px; text-shadow: 0 0 20px rgba(197, 160, 89, 0.2);
+        }
+
+        /* --- MÜZİK KONTROL --- */
+        .audio-node {
+            position: fixed; bottom: 0; width: 100%; height: 80px;
+            background: rgba(0,0,0,0.98); border-top: 1px solid var(--border);
+            display: flex; align-items: center; padding: 0 40px; z-index: 2000;
+        }
+        .visual-bars { display: flex; gap: 4px; height: 30px; align-items: flex-end; }
+        .v-bar { width: 2px; background: var(--gold); animation: pulse 0.8s infinite ease-in-out; }
+
+        @keyframes pulse { 0%, 100% { height: 5px; } 50% { height: 25px; } }
+
+    </style>
+</head>
+<body>
+
+    <div id="splash">
+        <div class="intro-text">Axellizm Sitesine Hoşgeldiniz</div>
+    </div>
+
+    <header>
+        <div class="brand">AXELLIZM</div>
+        <button class="royal-btn" onclick="vibe()">Access ✦</button>
+    </header>
+
+    <main>
+        <div class="prestige-card" id="card1">
+            <h2 style="font-family:'Bodoni Moda'; font-size: 2.5rem; color: var(--gold); margin-bottom:20px;">Elite Identity</h2>
+            <p style="font-weight: 200; font-size: 0.9rem; color: #888; margin-bottom: 40px; line-height: 1.8;">Kişisel dijital anahtarınızı oluşturun ve Axellizm ekosistemindeki rütbenizi belirleyin.</p>
+            <button class="royal-btn" style="width: 100%;" onclick="vibe()">Initialize Module ↗</button>
+        </div>
+
+        <div class="prestige-card">
+            <h2 style="font-family:'Bodoni Moda'; font-size: 2.5rem; color: var(--gold); margin-bottom:20px;">The Vault</h2>
+            <p style="font-weight: 200; font-size: 0.9rem; color: #888; margin-bottom: 40px; line-height: 1.8;">Sadece onaylı üyelerin erişebildiği yüksek çözünürlüklü medya arşivi.</p>
+            <button class="royal-btn" style="width: 100%;" onclick="vibe()">Open Archive ✦</button>
+        </div>
+
+        <div class="footer-status">
+            <div class="status-pill">SİSTEME KAYITLI ÜYELER</div>
+            <div class="count-display" id="mainCounter">003,124</div>
+            <p style="font-size: 0.6rem; color: #444; margin-top: 15px; letter-spacing: 2px;">LIVE NETWORK CONNECTION • 120 FPS</p>
+        </div>
+    </main>
+
+    <div class="audio-node">
+        <div style="width: 45px; height: 45px; border: 1px solid var(--border); background: url('https://picsum.photos/100/100') center/cover; margin-right: 20px;"></div>
+        <div>
+            <div style="font-size: 0.8rem; font-weight: 600; letter-spacing: 1px;">Royal Resonance</div>
+            <div style="font-size: 0.6rem; color: var(--gold); letter-spacing: 3px;">STUDIO MASTER AUDIO</div>
+        </div>
+        <div class="visual-bars" style="margin-left: auto;">
+            <div class="v-bar" style="animation-delay: 0.1s"></div>
+            <div class="v-bar" style="animation-delay: 0.3s"></div>
+            <div class="v-bar" style="animation-delay: 0.2s"></div>
+            <div class="v-bar" style="animation-delay: 0.4s"></div>
+            <div class="v-bar" style="animation-delay: 0.5s"></div>
+        </div>
+    </div>
+
+    <script>
+        // Giriş Kontrolü
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const s = document.getElementById('splash');
+                s.style.opacity = '0';
+                setTimeout(() => s.remove(), 1500);
+            }, 3000);
+            
+            updateCounter();
+        });
+
+        // Sayaç Animasyonu
+        function updateCounter() {
+            let count = 3124;
+            const el = document.getElementById('mainCounter');
+            setInterval(() => {
+                count += Math.floor(Math.random() * 2);
+                el.innerText = count.toLocaleString('en-US', {minimumIntegerDigits: 6});
+                el.style.color = "#fff";
+                setTimeout(() => el.style.color = "white", 100);
+            }, 4000);
+        }
+
+        // Dokunsal Geri Bildirim
+        function vibe() {
+            if ("vibrate" in navigator) navigator.vibrate(30);
+            // Kanka buraya istediğin linki ekleyebilirsin
+            // window.open('https://google.com', '_blank');
+        }
+
+        // Kartlara 3D Tilt Efekti (Mouse/Dokunmatik için)
+        const cards = document.querySelectorAll('.prestige-card');
+        cards.forEach(card => {
+            card.onmousemove = (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            };
+            card.onmouseleave = () => {
+                card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+            };
+        });
+    </script>
+</body>
+</html>
