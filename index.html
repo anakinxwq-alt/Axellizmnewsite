@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>AXELLIZM</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Bodoni+Moda:ital,wght@1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ios-pink: #ff2d55;
+            --ios-blur: blur(25px);
+            --glass: rgba(255, 255, 255, 0.08);
+            --dark-bg: #000000;
+        }
+
+        /* Temel Ayarlar */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+        body { 
+            background: var(--dark-bg);
+            background-image: radial-gradient(circle at 50% 20%, #4a0025 0%, #000 80%);
+            color: #fff; font-family: 'Montserrat', sans-serif; 
+            height: 100vh; overflow: hidden; display: flex; flex-direction: column;
+        }
+
+        /* --- SPLASH EKRANI --- */
+        #splash {
+            position: fixed; inset: 0; background: #000; z-index: 10000;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 1s ease-out;
+        }
+        .splash-text {
+            font-family: 'Bodoni Moda', serif;
+            font-size: 2.8rem;
+            color: var(--ios-pink);
+            letter-spacing: 15px;
+            text-transform: uppercase;
+            font-style: italic;
+            animation: iosIn 3s ease-in-out forwards;
+            opacity: 0;
+            text-shadow: 
+                0 0 8px rgba(255,45,85,0.7),
+                0 0 18px rgba(255,45,85,0.5);
+        }
+        @keyframes iosIn { 0% { opacity:0; transform:scale(0.8); } 50% { opacity:1; } 100% { opacity:0; transform:scale(1); } }
+
+        /* --- HEADER --- */
+        header { padding: 50px 20px 10px; text-align: center; }
+        #axellizmTitle {
+            font-family: 'Bodoni Moda', serif;
+            font-size: 3rem;
+            letter-spacing: 6px;
+            font-style: italic;
+            color: var(--ios-pink);
+            text-shadow: 0 0 5px rgba(255,45,85,0.6), 0 0 15px rgba(255,45,85,0.4);
+            transition: all 0.3s ease-in-out;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        /* --- ANA İÇERİK --- */
+        main { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+
+        /* --- DİNAMİK KALP MODÜLÜ --- */
+        .heart-aura {
+            position: relative; width: 150px; height: 150px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px;
+        }
+        .heart-svg {
+            font-size: 90px; color: var(--ios-pink);
+            filter: drop-shadow(0 0 25px rgba(255, 45, 85, 0.9));
+            animation: pulse 1.2s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+        .heart-user-name {
+            position: absolute; width: 100%; text-align: center;
+            top: 50%; left: 50%; transform: translate(-50%, -40%);
+            font-size: 0.75rem; font-weight: 700; color: #fff;
+            text-transform: uppercase; letter-spacing: 1px; pointer-events: none;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.1); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* --- iOS AUTH KARTI --- */
+        .ios-card {
+            width: 100%; max-width: 400px;
+            background: var(--glass); backdrop-filter: var(--ios-blur);
+            -webkit-backdrop-filter: var(--ios-blur);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 32px; padding: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        input {
+            width: 100%; padding: 18px; margin-bottom: 12px;
+            background: rgba(255,255,255,0.06); border: none;
+            border-radius: 14px; color: #fff; font-size: 1rem;
+            font-family: 'Montserrat'; transition: 0.3s;
+        }
+        input:focus { background: rgba(255,255,255,0.12); outline: none; }
+        input::placeholder { color: rgba(255,255,255,0.2); }
+
+        .btn {
+            width: 100%; padding: 18px; border: none; border-radius: 16px;
+            font-family: 'Montserrat'; font-weight: 600; font-size: 1rem;
+            cursor: pointer; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            position: relative; overflow: hidden;
+        }
+        .btn-main { background: var(--ios-pink); color: #fff; margin-top: 5px; }
+        .btn-outline { background: rgba(255,255,255,0.1); color: #fff; margin-top: 10px; }
+        .btn-google { background: #fff; color: #000; margin-top: 20px; font-size: 0.9rem; }
+        .btn-google img { width: 18px; }
+
+        .btn:active { transform: scale(0.96); opacity: 0.8; }
+
+        .btn::after {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: skewX(-25deg); animation: shimmer 4s infinite;
+        }
+        @keyframes shimmer { 0% { left: -150%; } 30% { left: 150%; } 100% { left: 150%; } }
+
+        /* --- DYNAMIC ISLAND PLAYER --- */
+        .dynamic-island {
+            background: rgba(0,0,0,0.9); border: 1px solid rgba(255,255,255,0.1);
+            margin: 0 25px 30px; padding: 15px 20px; border-radius: 28px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .island-art { width: 35px; height: 35px; background: #1a1a1a; border-radius: 8px; }
+        .island-text { font-size: 0.8rem; flex: 1; }
+        .island-text b { color: var(--ios-pink); }
+        .viz { display: flex; gap: 3px; }
+        .v-bar { width: 2px; height: 12px; background: var(--ios-pink); animation: v-wave 0.5s infinite alternate; }
+        @keyframes v-wave { from { height: 4px; } to { height: 16px; } }
+
+        /* Footer Status */
+        .status-text { 
+            text-align: center; font-size: 0.6rem; color: rgba(255,255,255,0.3);
+            letter-spacing: 2px; margin-bottom: 40px; text-transform: uppercase;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="splash"><div class="splash-text">AXELLIZM</div></div>
+
+    <audio id="playerAudio" loop>
+        <source src="https://www.mboxdrive.com/Deha-Tuzcu-Rxckstar.mp3" type="audio/mp3">
+    </audio>
+
+    <header><h1 id="axellizmTitle">AXELLIZM</h1></header>
+
+    <main>
+        <div class="heart-aura">
+            <div class="heart-svg">❤️</div>
+            <div class="heart-user-name" id="auraLabel">Axel</div>
+        </div>
+
+        <div class="ios-card">
+            <input type="text" id="userInput" placeholder="Kullanıcı Adı" oninput="syncName(this.value)">
+            <input type="password" id="passInput" placeholder="Şifre">
+
+            <button class="btn btn-main" onclick="sys('register')">Sisteme Kaydol</button>
+            <button class="btn btn-outline" onclick="sys('login')">Giriş Yap</button>
+
+            <button class="btn btn-google" onclick="googleSim()">
+                <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" alt="G">
+                Google ile Devam Et
+            </button>
+        </div>
+    </main>
+
+    <div class="dynamic-island">
+        <div class="island-art"></div>
+        <div class="island-text">Rxckstar — <b>Deha Tuzcu</b></div>
+        <div class="viz">
+            <div class="v-bar"></div>
+            <div class="v-bar" style="animation-delay: 0.2s"></div>
+            <div class="v-bar" style="animation-delay: 0.1s"></div>
+        </div>
+    </div>
+
+    <div class="status-text">
+        Encrypted Database • Nodes: <span id="nodeCount">14,209</span>
+    </div>
+
+    <script>
+        const audio = document.getElementById('playerAudio');
+
+        // Giriş Akışı
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('splash').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('splash').remove();
+                    audio.play().catch(() => console.log("Müzik etkileşim bekliyor."));
+                }, 1000);
+            }, 3000);
+            loadNodes();
+        };
+
+        // İsim Senkronizasyonu
+        function syncName(val) {
+            document.getElementById('auraLabel').innerText = val ? val : "Axel";
+        }
+
+        // Veritabanı ve Auth Simülasyonu
+        function sys(type) {
+            haptic();
+            const u = document.getElementById('userInput').value;
+            const p = document.getElementById('passInput').value;
+            
+            if(!u || !p) return alert("Bilgileri eksiksiz girin.");
+
+            const db = JSON.parse(localStorage.getItem('ax_db') || '{}');
+
+            if(type === 'register') {
+                db[u] = { password: p, date: new Date().toLocaleDateString() };
+                localStorage.setItem('ax_db', JSON.stringify(db));
+                alert(u + " sisteme kaydedildi!");
+            } else {
+                if(db[u] && db[u].password === p) {
+                    alert("Erişim Onaylandı. Hoş geldin " + u);
+                } else {
+                    alert("Kimlik doğrulanamadı.");
+                }
+            }
+        }
+
+        // Google Giriş Simülasyonu
+        function googleSim() {
+            haptic();
+            alert("Google Cloud API bağlanıyor...");
+            setTimeout(() => { syncName("G-User"); }, 1000);
+        }
+
+        // Haptik Titreşim (iPhone Hissiyatı)
+        function haptic() {
+            if ("vibrate" in navigator) navigator.vibrate(15);
+        }
+
+        function loadNodes() {
+            const n = 14209 + Math.floor(Math.random()*200);
+            document.getElementById('nodeCount').innerText = n.toLocaleString();
+        }
+    </script>
+</body>
+</html>
